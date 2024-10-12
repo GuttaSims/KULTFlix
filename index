@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Life Media Library</title>
+</head>
+<body>
+    <h1>Second Life Media Library</h1>
+    <h2>Movies</h2>
+    <ul>
+        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie1.mp4">Movie 1</a></li>
+        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie2.mp4">Movie 2</a></li>
+        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie3.mp4">Movie 3</a></li>
+    </ul>
+</body>
+</html>
