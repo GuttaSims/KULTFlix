@@ -4,69 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Second Life Vending System</title>
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
-</head>
-<body>
-    <h1>Second Life Vending System</h1>
-    <h2>Available Products</h2>
-    <ul id="product-list"></ul>
-    <h2>Add Product</h2>
-    <input type="text" id="itemName" placeholder="Item Name">
-    <button id="addItem">Add Item</button>
     
-    <script>
-       // Import the functions you need from the SDKs you need
+    <!-- Include Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
 
-import { initializeApp } from "firebase/app";
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9lsNt98AvBhCGaAVInw2Peyfy-9QuDyI",
+            authDomain: "kultflix-925ec.firebaseapp.com",
+            projectId: "kultflix-925ec",
+            storageBucket: "kultflix-925ec.appspot.com",
+            messagingSenderId: "568060719719",
+            appId: "1:568060719719:web:2fab4ef989009e49955ac2",
+            measurementId: "G-SMRSEJ8L3Y"
+        };
 
-import { getAnalytics } from "firebase/analytics";
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
 
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyA9lsNt98AvBhCGaAVInw2Peyfy-9QuDyI",
-
-  authDomain: "kultflix-925ec.firebaseapp.com",
-
-  projectId: "kultflix-925ec",
-
-  storageBucket: "kultflix-925ec.appspot.com",
-
-  messagingSenderId: "568060719719",
-
-  appId: "1:568060719719:web:2fab4ef989009e49955ac2",
-
-  measurementId: "G-SMRSEJ8L3Y"
-
-};
-
-
-// Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
-
-const analytics = getAnalytics(app);
+        const products = [];
 
         // Function to display products
         function displayProducts() {
-            $('#product-list').empty();
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Clear existing products
             products.forEach((product, index) => {
-                $('#product-list').append(`<li>${product} <button onclick="purchase(${index})">Buy</button></li>`);
+                productList.innerHTML += `<li>${product} <button onclick="purchase(${index})">Buy</button></li>`;
             });
         }
 
         // Function to add product to Firebase
         function addProductToDatabase(itemName) {
-            database.ref('products/').push({ name: itemName });
+            const productRef = ref(database, 'products/' + new Date().getTime()); // Use timestamp as unique ID
+            set(productRef, { name: itemName });
         }
 
         // Function to simulate a purchase
@@ -86,8 +62,9 @@ const analytics = getAnalytics(app);
         };
 
         // Fetch products from Firebase
-        database.ref('products/').on('value', (snapshot) => {
-            products.length = 0; // Clear the existing products array
+        const productsRef = ref(database, 'products/');
+        onValue(productsRef, (snapshot) => {
+            products.length = 0; // Clear existing products array
             snapshot.forEach((childSnapshot) => {
                 const item = childSnapshot.val().name;
                 products.push(item);
@@ -95,5 +72,13 @@ const analytics = getAnalytics(app);
             displayProducts();
         });
     </script>
+</head>
+<body>
+    <h1>Second Life Vending System</h1>
+    <h2>Available Products</h2>
+    <ul id="product-list"></ul>
+    <h2>Add Product</h2>
+    <input type="text" id="itemName" placeholder="Item Name">
+    <button id="addItem">Add Item</button>
 </body>
 </html>
