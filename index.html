@@ -3,20 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Second Life Media Library</title>
+    <title>Second Life Vending System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Second Life Media Library</h1>
-    <h2>Movies</h2>
-    <ul>
-        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie1.mp4">Movie 1</a></li>
-        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie2.mp4">Movie 2</a></li>
-        <li><a href="https://github.com/yourusername/SL-Media-Library/blob/main/movie3.mp4">Movie 3</a></li>
-    </ul>
-    <a href="https://marketplace.secondlife.com/p/KULT-PS2-Chameleon-Tank/26292057" target="_blank">
-    <button style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        Buy Now
-    </button>
-</a>
+    <h1>Second Life Vending System</h1>
+    <h2>Available Products</h2>
+    <ul id="product-list"></ul>
+    <h2>Add Product</h2>
+    <input type="text" id="itemName" placeholder="Item Name">
+    <button id="addItem">Add Item</button>
+    
+    <script>
+        const products = [];
+
+        // Function to display products
+        function displayProducts() {
+            $('#product-list').empty();
+            products.forEach((product, index) => {
+                $('#product-list').append(`<li>${product} <button onclick="purchase(${index})">Buy</button></li>`);
+            });
+        }
+
+        // Function to simulate adding an item
+        $('#addItem').click(() => {
+            const itemName = $('#itemName').val();
+            if (itemName) {
+                products.push(itemName);
+                $('#itemName').val('');
+                displayProducts();
+            }
+        });
+
+        // Function to simulate a purchase
+        function purchase(index) {
+            alert(`Purchased: ${products[index]}`);
+        }
+
+        // Simulate fetching products from a server
+        $(document).ready(() => {
+            // For demonstration, adding some initial products
+            products.push('Example Item 1');
+            products.push('Example Item 2');
+            displayProducts();
+        });
+    </script>
 </body>
 </html>
